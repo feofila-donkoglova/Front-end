@@ -6,20 +6,34 @@ import './Tree.css';
 function Tree() {
   const [relatives, setRelatives] = useState([]);
   const [activePersonId, setActivePersonId] = useState(null);
-  const [expandedPersonId, setExpandedPersonId] = useState(null); // Для розгортання "Читати більше"
+  const [expandedPersonId, setExpandedPersonId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await getRelatives();
-      const sortedData = data.sort((a, b) => parseInt(a.birthYear || 0) - parseInt(b.birthYear || 0));
+      const sortedData = data.sort((a, b) => {
+        const yearA = a.birthYear ? parseInt(String(a.birthYear).match(/\d{4}/)?.[0] || 0) : 0;
+        const yearB = b.birthYear ? parseInt(String(b.birthYear).match(/\d{4}/)?.[0] || 0) : 0;
+        return yearA - yearB;
+      });
       setRelatives(sortedData);
     };
     fetchData();
   }, []);
 
-  const getAge = (birthYear) => {
-    if (!birthYear) return '—';
-    return new Date().getFullYear() - parseInt(birthYear);
+  const getAge = (birthDate, deathDate) => {
+    if (!birthDate) return '—';
+    const birthYearMatch = String(birthDate).match(/\d{4}/);
+    if (!birthYearMatch) return '—';
+    const bYear = parseInt(birthYearMatch[0]);
+
+    if (deathDate) {
+      const deathYearMatch = String(deathDate).match(/\d{4}/);
+      if (deathYearMatch) {
+        return parseInt(deathYearMatch[0]) - bYear;
+      }
+    }
+    return new Date().getFullYear() - bYear;
   };
 
   const handleBackgroundClick = () => {
@@ -27,7 +41,6 @@ function Tree() {
     setExpandedPersonId(null);
   };
 
-  // МАГІЯ: Функція автоматичного вираховування бабусь та дідусів
   const getComputedTags = (targetPerson) => {
     const computedTags = [];
     if (!targetPerson.tags) return computedTags;
@@ -36,20 +49,17 @@ function Tree() {
 
     parents.forEach(parentTag => {
       const parentObj = relatives.find(r => r.id === parentTag.relatedPersonId);
-      
       if (parentObj && parentObj.tags) {
         const grandParents = parentObj.tags.filter(t => t.role === 'Матір' || t.role === 'Батько');
-        
         grandParents.forEach(gpTag => {
           computedTags.push({
             role: gpTag.role === 'Матір' ? 'Бабуся' : 'Дідусь',
             relatedPersonName: gpTag.relatedPersonName,
-            isComputed: true 
+            isComputed: true
           });
         });
       }
     });
-
     return computedTags;
   };
 
@@ -64,7 +74,6 @@ function Tree() {
             const isActive = activePersonId === person.id;
             const isExpanded = expandedPersonId === person.id;
 
-            // Отримуємо автоматичні теги
             const computedTags = getComputedTags(person);
             const allTags = [...(person.tags || []), ...computedTags];
 
@@ -76,7 +85,7 @@ function Tree() {
                 onClick={(e) => {
                   e.stopPropagation();
                   setActivePersonId(isActive ? null : person.id);
-                  if (!isActive) setExpandedPersonId(null); // Скидаємо "читати більше" при зміні людини
+                  if (!isActive) setExpandedPersonId(null);
                 }}
               >
                 <div className="node-icon-wrapper">
@@ -90,9 +99,9 @@ function Tree() {
                     <h4 className="tooltip-name">{person.fullName}</h4>
                     
                     <div className="tooltip-meta">
-                      <span className="tooltip-age">{getAge(person.birthYear)} років</span>
+                      <span className="tooltip-age">{getAge(person.birthYear, person.deathYear)} років</span>
                       <span className="tooltip-year">
-                        {person.birthYear || 'Рік невідомий'} 
+                        {person.birthYear || 'Дата невідома'} 
                         {person.deathYear ? ` — ${person.deathYear}` : ''}
                       </span>
                     </div>
@@ -103,7 +112,7 @@ function Tree() {
                       )}
                       <p><strong>Освіта:</strong> {person.education || 'Не вказано'}</p>
                     </div>
-                    
+
                     <button 
                       className="read-more-btn"
                       onClick={(e) => {
@@ -114,7 +123,6 @@ function Tree() {
                       {isExpanded ? 'Сховати деталі' : 'Читати більше'}
                     </button>
 
-                    {/* Зона з хештегами, яка відкривається */}
                     {isExpanded && (
                       <div className="tooltip-tags-area">
                         <p className="tooltip-notes"><strong>Родинні зв'язки:</strong></p>
@@ -138,7 +146,6 @@ function Tree() {
             );
           })}
 
-          {/* МАЛЮВАННЯ ЛІНІЙ ПО МАСИВУ ТЕГІВ */}
           {relatives.map((person) => {
             if (!person.tags || person.tags.length === 0) return null;
 
@@ -147,13 +154,12 @@ function Tree() {
               let endNode = tag.relatedPersonId;
               let isDashed = false;
 
-              // Логіка напрямку: лінія завжди йде від старшого до молодшого
               if (tag.role === 'Матір' || tag.role === 'Батько') {
-                startNode = tag.relatedPersonId; // Матір/Батько
-                endNode = person.id;             // Дитина
+                startNode = tag.relatedPersonId; 
+                endNode = person.id;             
               } else if (tag.role === 'Син' || tag.role === 'Дочка') {
-                startNode = person.id;           // Батько/Матір
-                endNode = tag.relatedPersonId;   // Дитина
+                startNode = person.id;           
+                endNode = tag.relatedPersonId;   
               } else if (tag.role === 'Брат' || tag.role === 'Сестра') {
                 isDashed = true;
               }

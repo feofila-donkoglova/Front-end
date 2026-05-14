@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import './PersonModal.css';
 
 function PersonModal({ person, onClose, onUpdate }) {
-  const [editData, setEditData] = useState({ ...person });
+  const [editData, setEditData] = useState({ 
+    education: person.education || '',
+    notes: person.notes || ''
+  });
 
   const handleChange = (e) => {
     setEditData({ ...editData, [e.target.name]: e.target.value });
@@ -17,38 +20,31 @@ function PersonModal({ person, onClose, onUpdate }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <span className="modal-close" onClick={onClose}>&times;</span>
-        
-        <h2>Редагування: {person.lastName} {person.firstName}</h2>
-        <p style={{marginBottom: '20px', color: '#666'}}>Рік народження: {person.birthYear || '—'}</p>
-        
-        <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
-          <div>
-            <label style={{fontWeight: 'bold', fontSize: '0.9rem'}}>Освіта</label>
-            <input 
-              name="education" 
-              value={editData.education || ''} 
-              onChange={handleChange} 
-              placeholder="Вкажіть освіту..."
-              style={{width: '100%', padding: '8px', marginTop: '5px', borderRadius: '5px', border: '1px solid #ccc'}}
-            />
-          </div>
 
-          <div>
-            <label style={{fontWeight: 'bold', fontSize: '0.9rem'}}>Нотатки</label>
-            <textarea 
-              name="notes" 
-              value={editData.notes || ''} 
-              onChange={handleChange} 
-              placeholder="Додайте цікаві факти чи нотатки..."
-              style={{width: '100%', padding: '8px', marginTop: '5px', borderRadius: '5px', border: '1px solid #ccc', minHeight: '80px'}}
-            />
-          </div>
+        <h2 className="modal-title">Редагування: {person.lastName} {person.firstName}</h2>
+        <p className="modal-subtitle">Рік народження: {person.birthYear || '—'}</p>
+
+        <div className="form-group-modal">
+          <label>Освіта:</label>
+          <input 
+            name="education" 
+            value={editData.education} 
+            onChange={handleChange} 
+            placeholder="Наприклад: КПІ ім. Ігоря Сікорського"
+          />
         </div>
 
-        <button 
-          onClick={handleSave}
-          style={{width: '100%', padding: '10px', marginTop: '25px', backgroundColor: '#2ecc71', color: 'white', border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer'}}
-        >
+        <div className="form-group-modal">
+          <label>Нотатки:</label>
+          <textarea 
+            name="notes" 
+            value={editData.notes} 
+            onChange={handleChange} 
+            placeholder="Додайте цікаві факти чи нотатки..."
+          />
+        </div>
+
+        <button className="modal-save-btn" onClick={handleSave}>
           Зберегти зміни
         </button>
       </div>

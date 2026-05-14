@@ -1,123 +1,180 @@
 .tree-section {
+  background-color: var(--bg-color, #f5f6f6);
   min-height: calc(100vh - 94px);
-  background-color: var(--bg-color); /* Світло-бежевий фон */
-  padding: 40px;
+  padding: 40px 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .tree-title {
-  font-family: var(--font-serif);
+  font-family: var(--font-serif, serif);
   font-size: 2.5rem;
-  color: var(--text-dark);
+  font-weight: 700;
+  color: #000;
   margin-bottom: 10px;
+  text-align: center;
 }
 
 .tree-subtitle {
-  font-family: var(--font-sans);
-  color: #666;
-  margin-bottom: 50px;
+  color: #777;
+  font-size: 1rem;
+  margin-bottom: 60px;
+  text-align: center;
 }
 
-/* Полотно, де розташовані іконки */
 .tree-canvas {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 80px;
-  max-width: 1000px;
   position: relative;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 50px;
+  width: 100%;
+  max-width: 1200px;
 }
+
 
 .tree-node {
   position: relative;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
 }
 
-/* Обгортка для іконки, щоб зробити жовте коло при кліку */
 .node-icon-wrapper {
   width: 70px;
   height: 70px;
+  background-color: transparent;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-/* Жовте підсвічування для активної іконки, як на макеті */
-.tree-node.active .node-icon-wrapper,
 .tree-node:hover .node-icon-wrapper {
-  background-color: #ffd966; /* Жовтий колір з презентації */
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
-/* ----- СТИЛІ ДЛЯ СПЛИВАЮЧОЇ КАРТКИ (TOOLTIP) ----- */
+.tree-node.active .node-icon-wrapper {
+  background-color: #fdd862; 
+}
+
+.tree-node.active {
+  z-index: 10;
+}
+
 .person-tooltip {
   position: absolute;
-  top: -20px;
-  left: 90px; /* Зсуваємо картку правіше від іконки */
-  width: 320px;
+  top: 90px; 
+  left: 50%;
+  transform: translateX(-50%); 
   background-color: #ffffff;
+  padding: 30px;
   border-radius: 16px;
-  padding: 25px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  z-index: 100;
-  animation: slideIn 0.2s ease-out;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  width: max-content;
+  min-width: 300px;
+  max-width: 350px;
+  z-index: 20;
+  animation: tooltipFadeIn 0.2s ease-out;
   cursor: default;
 }
 
 .tooltip-name {
-  font-family: var(--font-serif);
-  font-size: 1.4rem;
-  margin: 0 0 15px 0;
-  color: var(--text-dark);
+  font-family: var(--font-serif, serif);
+  font-size: 1.2rem;
+  font-weight: 800;
   text-transform: uppercase;
+  text-align: center;
+  color: #000;
+  margin: 0 0 15px 0;
+  line-height: 1.3;
 }
 
 .tooltip-meta {
   display: flex;
-  gap: 20px;
-  font-family: var(--font-sans);
-  font-weight: 600;
+  justify-content: center;
+  gap: 15px;
+  font-weight: 700;
   font-size: 0.95rem;
-  color: var(--text-dark);
-  margin-bottom: 15px;
+  color: #000;
+  margin-bottom: 20px;
 }
 
-.tooltip-details p {
-  font-family: var(--font-sans);
-  font-size: 0.9rem;
+.tooltip-details {
+  font-size: 0.95rem;
   color: #444;
-  margin-bottom: 8px;
-  line-height: 1.4;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
-.tooltip-notes {
-  margin-top: 15px !important;
-  color: #666 !important;
-}
-
+/* Кнопка "Читати більше" */
 .read-more-btn {
-  display: block;
-  margin: 20px auto 0;
   background: none;
   border: none;
   color: #888;
-  font-family: var(--font-sans);
-  font-size: 0.9rem;
-  cursor: pointer;
   text-decoration: underline;
-  transition: color 0.2s;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
 }
 
 .read-more-btn:hover {
-  color: var(--text-dark);
+  color: #333;
 }
 
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(-10px); }
-  to { opacity: 1; transform: translateX(0); }
+@keyframes tooltipFadeIn {
+  from { opacity: 0; transform: translate(-50%, -10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+
+
+.tooltip-tags-area {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px dashed #ddd;
+  animation: slideDown 0.3s ease-out;
+  text-align: left; 
+}
+
+.tooltip-notes {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.tags-display-small {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tag-pill-small {
+  background-color: #f0f4f8;
+  color: #3f607d;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-family: var(--font-sans, sans-serif);
+  border: 1px solid #d9e2ec;
+}
+
+
+.computed-tag {
+  background-color: #fff9e6;
+  border-color: #ffd966;
+  color: #b08d16;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

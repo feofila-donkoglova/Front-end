@@ -40,13 +40,13 @@ function EditPersonModal({ person, onClose, onSave }) {
         </div>
         
         <div className="edit-row">
-          <label>Рік народження</label>
-          <input name="birthYear" value={formData.birthYear} onChange={handleChange} />
+          <label>Дата народження</label>
+          <input name="birthYear" value={formData.birthYear} onChange={handleChange} placeholder="12.05.1945 або 1945" />
         </div>
         
         <div className="edit-row">
-          <label>Рік смерті</label>
-          <input name="deathYear" value={formData.deathYear} onChange={handleChange} placeholder="-" />
+          <label>Дата смерті</label>
+          <input name="deathYear" value={formData.deathYear} onChange={handleChange} placeholder="20.11.2017 або 2017" />
         </div>
         
         <div className="edit-row">

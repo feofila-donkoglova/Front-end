@@ -21,7 +21,6 @@ function AddPersonForm({ onAdd, relatives = [] }) {
     if (!tagInput.role || !tagInput.relatedPersonId) return;
 
     const relatedPerson = relatives.find(r => r.id === tagInput.relatedPersonId);
-    // Робимо коротке ім'я для тегу (наприклад, "Марії")
     const shortName = relatedPerson ? relatedPerson.firstName : '...';
     
     const newTag = {
@@ -63,8 +62,7 @@ function AddPersonForm({ onAdd, relatives = [] }) {
       <input className="custom-input" name="lastName" value={form.lastName} onChange={handleFormChange} placeholder="Прізвище" />
       <input className="custom-input" name="firstName" value={form.firstName} onChange={handleFormChange} placeholder="Ім'я" />
       <input className="custom-input" name="patronymic" value={form.patronymic} onChange={handleFormChange} placeholder="По-батькові" />
-      <input className="custom-input" name="birthYear" type="number" value={form.birthYear} onChange={handleFormChange} placeholder="Рік народження" />
-      {/* Білий блок для тегів */}
+      <input className="custom-input" name="birthYear" type="text" value={form.birthYear} onChange={handleFormChange} placeholder="Дата народження (напр. 12.05.1945 або 1945)" />      {/* Білий блок для тегів */}
       <div className="tags-container-box">
 
         {/* Відображення доданих тегів (сірі) */}

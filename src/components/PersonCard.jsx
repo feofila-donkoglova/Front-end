@@ -2,9 +2,22 @@ import React from 'react';
 import './PersonCard.css';
 
 function PersonCard({ person, onDelete, onEdit }) {
-  // Рахуємо вік для відображення "40 років"
-  const currentYear = new Date().getFullYear();
-  const age = person.birthYear ? currentYear - parseInt(person.birthYear) : '—';
+  const getAge = (birthDate, deathDate) => {
+    if (!birthDate) return '—';
+    const birthYearMatch = String(birthDate).match(/\d{4}/);
+    if (!birthYearMatch) return '—';
+    const bYear = parseInt(birthYearMatch[0]);
+
+    if (deathDate) {
+      const deathYearMatch = String(deathDate).match(/\d{4}/);
+      if (deathYearMatch) {
+        return parseInt(deathYearMatch[0]) - bYear;
+      }
+    }
+    return new Date().getFullYear() - bYear;
+  };
+
+  const age = getAge(person.birthYear, person.deathYear);
 
   return (
     <div className="person-card">

@@ -1,0 +1,49 @@
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: Arial, sans-serif; /* Можна замінити на шрифт з макету */
+}
+
+/* Стилі для глобального Header */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #f7f6f2; /* Світлий колір фону з макету */
+}
+
+.logo a {
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+
+.main-nav ul {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+/* Псевдоклас для наведення та активного стану (вимога до лаб. роботи) */
+.main-nav a:hover,
+.main-nav a.active-link {
+  color: #d35400; /* Колір виділення (можна змінити на свій) */
+  font-weight: bold;
+}
+
+.main-content {
+  flex-grow: 1; /* Займає весь вільний простір, що залишився */
+}

@@ -1,0 +1,56 @@
+/* src/pages/Home.css */
+.hero-section {
+  position: relative;
+  min-height: calc(100vh - 94px); /* Висота екрану мінус висота хедера */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Вирівнювання по лівому краю */
+  padding-left: 10%; /* Відступ зліва */
+  
+  /* Твоє оригінальне фонове зображення */
+  background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3); /* Легке затемнення */
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  color: #ffffff;
+  text-align: left;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: 5.5rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+  line-height: 1.1;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+}
+
+.hero-subtitle {
+  font-family: var(--font-sans);
+  font-size: 1.4rem;
+  line-height: 1.6;
+  font-weight: 300;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

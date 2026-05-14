@@ -1,0 +1,165 @@
+/* src/pages/Profile.css */
+
+.profile-container {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 20px;
+  flex-grow: 1;
+  flex-wrap: wrap; /* Щоб на малих екранах блоки падали один під один */
+}
+
+/* --- Ліва картка (Профіль) --- */
+.profile-card {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 40px;
+  display: flex;
+  gap: 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  width: 600px;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  background-color: #d8d8d8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.profile-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-name {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  color: #3f5261;
+  margin: 0 0 15px 0;
+  text-transform: uppercase;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.profile-year {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+.profile-details-list p {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: #333;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.profile-details-list p span {
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.profile-notes {
+  color: #888 !important;
+}
+.profile-notes span {
+  color: #333; /* Слово "Нотатки" темне, а сам текст світліший */
+}
+
+/* Форма редагування */
+.edit-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.edit-profile-form input, 
+.edit-profile-form textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  outline: none;
+  background-color: #fcfcfc;
+}
+
+.edit-profile-form input:focus, 
+.edit-profile-form textarea:focus {
+  border-color: #f5d76e;
+}
+
+.edit-profile-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Кнопки */
+.profile-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  margin-top: 35px;
+}
+
+.yellow-btn {
+  background-color: #f5d76e;
+  color: #333;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 25px;
+  font-size: 0.8rem;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: background 0.2s;
+}
+
+.yellow-btn:hover {
+  background-color: #e2c55d;
+}
+
+/* --- Права картка (Статистика) --- */
+.stats-card {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 40px;
+  width: 350px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  text-align: center;
+}
+
+.stats-title {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  color: #3f5261;
+  margin: 0 0 35px 0;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: #333;
+}
+
+.stats-number {
+  font-weight: 600;
+}

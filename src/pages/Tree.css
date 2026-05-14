@@ -1,0 +1,123 @@
+.tree-section {
+  min-height: calc(100vh - 94px);
+  background-color: var(--bg-color); /* Світло-бежевий фон */
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tree-title {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.tree-subtitle {
+  font-family: var(--font-sans);
+  color: #666;
+  margin-bottom: 50px;
+}
+
+/* Полотно, де розташовані іконки */
+.tree-canvas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  max-width: 1000px;
+  position: relative;
+}
+
+.tree-node {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Обгортка для іконки, щоб зробити жовте коло при кліку */
+.node-icon-wrapper {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+/* Жовте підсвічування для активної іконки, як на макеті */
+.tree-node.active .node-icon-wrapper,
+.tree-node:hover .node-icon-wrapper {
+  background-color: #ffd966; /* Жовтий колір з презентації */
+  transform: scale(1.1);
+}
+
+/* ----- СТИЛІ ДЛЯ СПЛИВАЮЧОЇ КАРТКИ (TOOLTIP) ----- */
+.person-tooltip {
+  position: absolute;
+  top: -20px;
+  left: 90px; /* Зсуваємо картку правіше від іконки */
+  width: 320px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  animation: slideIn 0.2s ease-out;
+  cursor: default;
+}
+
+.tooltip-name {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  margin: 0 0 15px 0;
+  color: var(--text-dark);
+  text-transform: uppercase;
+}
+
+.tooltip-meta {
+  display: flex;
+  gap: 20px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  margin-bottom: 15px;
+}
+
+.tooltip-details p {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.tooltip-notes {
+  margin-top: 15px !important;
+  color: #666 !important;
+}
+
+.read-more-btn {
+  display: block;
+  margin: 20px auto 0;
+  background: none;
+  border: none;
+  color: #888;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.read-more-btn:hover {
+  color: var(--text-dark);
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}

@@ -1,0 +1,1559 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.gitignore
+index.html
+package.json
+src/App.css
+src/App.jsx
+src/components/AddPersonForm.css
+src/components/AddPersonForm.jsx
+src/components/PersonCard.css
+src/components/PersonCard.jsx
+src/components/PersonModal.css
+src/components/PersonModal.jsx
+src/hooks/useDrag.js
+src/index.css
+src/main.jsx
+src/pages/Home.css
+src/pages/Home.jsx
+src/pages/MyProfile.css
+src/pages/MyProfile.jsx
+src/pages/People.css
+src/pages/People.jsx
+src/pages/Tree.css
+src/pages/Tree.jsx
+src/script.js
+src/style.css
+src/utils/firebase.js
+src/utils/storage.js
+vite.config.js
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".gitignore">
+node_modules
+</file>
+
+<file path="package.json">
+{"name":"family-tree-project","private":true,"version":"0.0.1","type":"module","scripts":{"dev":"vite","build":"vite build","preview":"vite preview"},"dependencies":{"firebase":"^12.12.1","react":"^18.3.1","react-dom":"^18.3.1","react-router-dom":"^7.14.2","react-xarrows":"^2.0.2"},"devDependencies":{"@vitejs/plugin-react":"^4.7.0","vite":"^5.4.1"}}
+</file>
+
+<file path="src/App.css">
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: Arial, sans-serif; /* Можна замінити на шрифт з макету */
+}
+
+/* Стилі для глобального Header */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #f7f6f2; /* Світлий колір фону з макету */
+}
+
+.logo a {
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+
+.main-nav ul {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+/* Псевдоклас для наведення та активного стану (вимога до лаб. роботи) */
+.main-nav a:hover,
+.main-nav a.active-link {
+  color: #d35400; /* Колір виділення (можна змінити на свій) */
+  font-weight: bold;
+}
+
+.main-content {
+  flex-grow: 1; /* Займає весь вільний простір, що залишився */
+}
+</file>
+
+<file path="src/App.jsx">
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
+
+import Home from './pages/Home';
+import People from './pages/People';
+import Tree from './pages/Tree';
+import Profile from './pages/MyProfile.jsx';
+
+
+import './App.css';
+
+function App() {
+  return (
+    <Router>
+      <div className="app-layout">
+        {/* Глобальний Header з навігацією */}
+        <header className="main-header">
+          <div className="logo">
+            <NavLink to="/">Family Tree</NavLink>
+          </div>
+          <nav className="main-nav">
+            <ul>
+              <li>
+                <NavLink to="/" className={({ isActive }) => isActive ? "active-link" : ""}>
+                  Головна
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/people" className={({ isActive }) => isActive ? "active-link" : ""}>
+                  Родичі
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/tree" className={({ isActive }) => isActive ? "active-link" : ""}>
+                  Дерево
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/profile" className={({ isActive }) => isActive ? "active-link" : ""}>
+                  Моя сторінка
+                </NavLink>
+              </li>
+            </ul>
+          </nav>
+        </header>
+
+        {/* Основний контейнер для контенту сторінок */}
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/people" element={<People />} />
+            <Route path="/tree" element={<Tree />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+</file>
+
+<file path="src/components/AddPersonForm.css">
+.modal-content {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.3s ease-out;
+}
+
+.form-title {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-group input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+/* Псевдоклас focus - вимога лабораторної */
+.form-group input:focus {
+  outline: none;
+  border-color: #d35400; 
+  box-shadow: 0 0 0 2px rgba(211, 84, 0, 0.2);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.submit-btn, .cancel-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.submit-btn {
+  background-color: #d35400;
+  color: white;
+}
+
+.submit-btn:hover {
+  background-color: #e67e22;
+}
+
+.cancel-btn {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background-color: #e0e0e0;
+}
+
+/* Анімація появи модалки */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</file>
+
+<file path="src/components/AddPersonForm.jsx">
+import React, { useState } from 'react';
+import './AddPersonForm.css';
+
+function AddPersonForm({ onAdd, relatives = [] }) {
+  const [form, setForm] = useState({
+    lastName: '',
+    firstName: '',
+    patronymic: '',
+    birthYear: '',
+    relationType: '', // Роль (Батько, Матір, Брат...)
+    relatedPersonId: '' // ID людини, до якої прив'язуємо
+  });
+
+  function handleChange(e) {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  }
+
+  function handleSubmit() {
+    if (!form.firstName || !form.lastName) {
+      alert('Будь ласка, введіть хоча б прізвище та ім\'я');
+      return;
+    }
+
+    const person = {
+      id: crypto.randomUUID(),
+      firstName: form.firstName,
+      lastName: form.lastName,
+      patronymic: form.patronymic,
+      birthYear: form.birthYear,
+      relationType: form.relationType,
+      relatedPersonId: form.relatedPersonId,
+      fullName: `${form.lastName} ${form.firstName} ${form.patronymic}`.trim()
+    };
+
+    onAdd(person);
+    setForm({ lastName: '', firstName: '', patronymic: '', birthYear: '', relationType: '', relatedPersonId: '' });
+  }
+
+  return (
+    <div className="inline-add-form">
+      <div className="inputs-row">
+        <input name="lastName" value={form.lastName} onChange={handleChange} placeholder="Прізвище" />
+        <input name="firstName" value={form.firstName} onChange={handleChange} placeholder="Ім'я" />
+        <input name="patronymic" value={form.patronymic} onChange={handleChange} placeholder="По-батькові" />
+        <input name="birthYear" type="number" value={form.birthYear} onChange={handleChange} placeholder="Рік народження" />
+        
+        {/* Вибір ролі (тега) */}
+        <select name="relationType" value={form.relationType} onChange={handleChange} className="parent-select">
+          <option value="">-- Ким доводиться? --</option>
+          <option value="Батько">Батько для...</option>
+          <option value="Матір">Матір для...</option>
+          <option value="Син">Син для...</option>
+          <option value="Дочка">Дочка для...</option>
+          <option value="Брат">Брат для...</option>
+          <option value="Сестра">Сестра для...</option>
+        </select>
+
+        {/* Вибір існуючого родича */}
+        <select 
+          name="relatedPersonId" 
+          value={form.relatedPersonId} 
+          onChange={handleChange} 
+          className="parent-select"
+          disabled={!form.relationType} /* Блокуємо, поки не обрали роль */
+        >
+          <option value="">-- Оберіть родича --</option>
+          {relatives.map(r => <option key={r.id} value={r.id}>{r.fullName}</option>)}
+        </select>
+      </div>
+      <button className="add-submit-btn" onClick={handleSubmit}>ДОДАТИ</button>
+    </div>
+  );
+}
+
+export default AddPersonForm;
+</file>
+
+<file path="src/components/PersonCard.css">
+.person-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  width: 220px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.person-card:hover {
+  transform: translateY(-5px);
+}
+
+.delete-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+</file>
+
+<file path="src/components/PersonCard.jsx">
+import React from 'react';
+import './PersonCard.css';
+
+function PersonCard({ person, onClick, onDelete }) {
+  return (
+    <div className="person-card" onClick={onClick}>
+      <h3>{person.lastName} {person.firstName}</h3>
+      <p>Рік народження: {person.birthYear || '—'}</p>
+      <button
+        className="delete-btn"
+        onClick={(e) => {
+          e.stopPropagation(); // щоб не відкривалось модальне вікно
+          onDelete(person.id);
+        }}
+      >
+        Видалити
+      </button>
+    </div>
+  );
+}
+
+export default PersonCard;
+</file>
+
+<file path="src/components/PersonModal.css">
+/* src/components/PersonModal.css */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  position: relative;
+  width: 400px;
+  text-align: left;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px; right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+.modal-notes {
+  color: #555;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.modal-delete-btn {
+  margin-top: 20px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+</file>
+
+<file path="src/components/PersonModal.jsx">
+// src/components/PersonModal.jsx
+import React from 'react';
+import './PersonModal.css';
+
+function PersonModal({ person, onClose, onDelete }) {
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()} // клік всередині не закриває
+      >
+        <span className="modal-close" onClick={onClose}>&times;</span>
+
+        <h2>{person.lastName} {person.firstName} {person.patronymic}</h2>
+        <p>Рік народження: {person.birthYear || '—'}</p>
+
+        {person.notes && (
+          <p className="modal-notes">{person.notes}</p>
+        )}
+
+        <button
+          className="modal-delete-btn"
+          onClick={() => onDelete(person.id)}
+        >
+          Видалити
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default PersonModal;
+</file>
+
+<file path="src/hooks/useDrag.js">
+
+</file>
+
+<file path="src/index.css">
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7f6;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 30px;
+  color: #333;
+}
+
+#peopleContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+</file>
+
+<file path="src/main.jsx">
+import React, { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+</file>
+
+<file path="src/pages/Home.css">
+/* src/pages/Home.css */
+.hero-section {
+  position: relative;
+  min-height: calc(100vh - 94px); /* Висота екрану мінус висота хедера */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Вирівнювання по лівому краю */
+  padding-left: 10%; /* Відступ зліва */
+  
+  /* Твоє оригінальне фонове зображення */
+  background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3); /* Легке затемнення */
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  color: #ffffff;
+  text-align: left;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: 5.5rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+  line-height: 1.1;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+}
+
+.hero-subtitle {
+  font-family: var(--font-sans);
+  font-size: 1.4rem;
+  line-height: 1.6;
+  font-weight: 300;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</file>
+
+<file path="src/pages/Home.jsx">
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './Home.css'; // Підключаємо стилі компонента
+
+function Home() {
+  return (
+    <section className="hero-section">
+      <div className="hero-overlay"></div> {/* Затемнення для кращого читання тексту */}
+      <div className="hero-content">
+        {/* Виправив друкарську помилку з макету "you" на "your" */}
+        <h1 className="hero-title">Create your history</h1>
+        <p className="hero-subtitle">
+          Тут ви можете відтворити історію своєї родини.<br />
+          Щоб назавжди залишити слід у цьому світі для нащадків.
+        </p>
+        
+        {/* Кнопка для швидкого переходу до списку родичів */}
+        <Link to="/people" className="cta-button">
+          Перейти до родичів
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+export default Home;
+</file>
+
+<file path="src/pages/MyProfile.css">
+/* src/pages/Profile.css */
+
+.profile-container {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 20px;
+  flex-grow: 1;
+  flex-wrap: wrap; /* Щоб на малих екранах блоки падали один під один */
+}
+
+/* --- Ліва картка (Профіль) --- */
+.profile-card {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 40px;
+  display: flex;
+  gap: 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  width: 600px;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  background-color: #d8d8d8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.profile-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-name {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  color: #3f5261;
+  margin: 0 0 15px 0;
+  text-transform: uppercase;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.profile-year {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+.profile-details-list p {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: #333;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.profile-details-list p span {
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.profile-notes {
+  color: #888 !important;
+}
+.profile-notes span {
+  color: #333; /* Слово "Нотатки" темне, а сам текст світліший */
+}
+
+/* Форма редагування */
+.edit-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.edit-profile-form input, 
+.edit-profile-form textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  outline: none;
+  background-color: #fcfcfc;
+}
+
+.edit-profile-form input:focus, 
+.edit-profile-form textarea:focus {
+  border-color: #f5d76e;
+}
+
+.edit-profile-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Кнопки */
+.profile-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  margin-top: 35px;
+}
+
+.yellow-btn {
+  background-color: #f5d76e;
+  color: #333;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 25px;
+  font-size: 0.8rem;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: background 0.2s;
+}
+
+.yellow-btn:hover {
+  background-color: #e2c55d;
+}
+
+/* --- Права картка (Статистика) --- */
+.stats-card {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 40px;
+  width: 350px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  text-align: center;
+}
+
+.stats-title {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  color: #3f5261;
+  margin: 0 0 35px 0;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: #333;
+}
+
+.stats-number {
+  font-weight: 600;
+}
+</file>
+
+<file path="src/pages/MyProfile.jsx">
+import React, { useState, useEffect } from 'react';
+import { getRelatives, getProfileData, saveProfileData } from '../utils/storage.js';
+import "./MyProfile.css";
+
+function Profile() {
+  const [relativesCount, setRelativesCount] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Початкові дані
+const [profileData, setProfileData] = useState({
+    fullName: "Прізвище Ім'я",
+    birthYear: "Рік народження",
+    birthPlace: "Місце народження",
+    education: "Ваша освіта",
+    notes: "Напишіть кілька слів про себе..."
+  });
+
+  // Завантажуємо дані при відкритті сторінки
+  useEffect(() => {
+    const fetchData = async () => {
+      // Завантажуємо статистику родичів
+      const relatives = await getRelatives();
+      setRelativesCount(relatives.length);
+
+      // Завантажуємо дані профілю з Firebase
+      const savedProfile = await getProfileData();
+      if (savedProfile) {
+        setProfileData(savedProfile); // Якщо в базі щось є, оновлюємо стан
+      }
+      setIsLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  const handleChange = (e) => {
+    setProfileData({ ...profileData, [e.target.name]: e.target.value });
+  };
+
+  const handleSave = async () => {
+    setIsEditing(false); // Закриваємо форму
+    await saveProfileData(profileData); // Відправляємо дані у Firebase
+  };
+
+  return (
+    <div className="page-wrapper">
+      <div className="people-top-bar">
+        <div className="hamburger-icon">
+          <span></span><span></span><span></span>
+        </div>
+        <h2 className="main-title">МОЯ СТОРІНКА</h2>
+        <div className="spacer"></div>
+      </div>
+
+      <div className="profile-container">
+        
+        <div className="profile-card">
+          <div className="profile-avatar">
+            <svg viewBox="0 0 24 24" fill="#ccc" width="80px" height="80px">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+          </div>
+          
+          <div className="profile-info">
+            {isLoading ? (
+              <p>Завантаження даних...</p>
+            ) : isEditing ? (
+              <div className="edit-profile-form">
+                <input name="fullName" value={profileData.fullName} onChange={handleChange} placeholder="ПІБ" />
+                <input name="birthYear" value={profileData.birthYear} onChange={handleChange} placeholder="Рік народження" />
+                <input name="birthPlace" value={profileData.birthPlace} onChange={handleChange} placeholder="Місце народження" />
+                <input name="education" value={profileData.education} onChange={handleChange} placeholder="Освіта" />
+                <textarea name="notes" value={profileData.notes} onChange={handleChange} placeholder="Додайте інформацію про себе..." />
+              </div>
+            ) : (
+              <div className="view-profile">
+                <h3 className="profile-name">{profileData.fullName}</h3>
+                <p className="profile-year">{profileData.birthYear}</p>
+                <div className="profile-details-list">
+                  <p><span>Місце народження:</span> {profileData.birthPlace || 'Не вказано'}</p>
+                  <p><span>Освіта:</span> {profileData.education || 'Не вказано'}</p>
+                  <p className="profile-notes"><span>Нотатки:</span> {profileData.notes || 'Додати інформацію про себе'}</p>
+                </div>
+              </div>
+            )}
+            
+            {!isLoading && (
+              <div className="profile-actions">
+                <button 
+                  className="yellow-btn" 
+                  onClick={() => setIsEditing(true)}
+                  style={{ opacity: isEditing ? 0.5 : 1 }}
+                >
+                  РЕДАГУВАТИ
+                </button>
+                <button 
+                  className="yellow-btn" 
+                  onClick={handleSave} // Тепер ця кнопка зберігає в БД
+                >
+                  ЗБЕРЕГТИ
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="stats-card">
+          <h3 className="stats-title">СТАТИСТИКА</h3>
+          <div className="stats-row">
+            <span>Додано родичів:</span>
+            <span className="stats-number">{relativesCount}</span>
+          </div>
+        </div>
+      </div>
+      <div className="footer-brand">Family Tree</div>
+    </div>
+  );
+}
+
+export default Profile;
+</file>
+
+<file path="src/pages/People.css">
+.people-section {
+  padding: 40px 60px;
+  background-color: var(--bg-color); /* Беремо бежевий фон з App.css */
+  min-height: calc(100vh - 94px);
+}
+
+.people-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  color: var(--text-dark);
+  text-align: center;
+  margin-bottom: 40px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.cards-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.loading-text, .empty-message {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-family: var(--font-sans);
+}
+</file>
+
+<file path="src/pages/People.jsx">
+import React, { useState, useEffect } from 'react';
+import { getRelatives, saveRelative, deleteRelativeFromDB } from '../utils/storage.js';
+import AddPersonForm from '../components/AddPersonForm.jsx';
+import PersonCard from '../components/PersonCard.jsx';
+import './People.css';
+
+function People() {
+  const [relatives, setRelatives] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const data = await getRelatives();
+      setRelatives(data);
+      setIsLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  const handleAddPerson = async (newPerson) => {
+    const savedPerson = await saveRelative(newPerson);
+    if (savedPerson) {
+      setRelatives([...relatives, savedPerson]);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    await deleteRelativeFromDB(id);
+    setRelatives(relatives.filter(person => person.id !== id));
+  };
+
+  return (
+    <section className="people-section">
+      <div className="people-container">
+        {/* Форма додавання в один рядок */}
+        <AddPersonForm onAdd={handleAddPerson} relatives={relatives} />
+
+        {isLoading ? (
+          <div className="loading-text">Завантаження даних із сервера...</div>
+        ) : (
+          <div className="cards-grid">
+            {relatives.length > 0 ? (
+              relatives.map((person) => (
+                <PersonCard 
+                  key={person.id} 
+                  person={person} 
+                  onDelete={handleDelete} 
+                />
+              ))
+            ) : (
+              <div className="empty-message">Список родичів порожній.</div>
+            )}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+export default People;
+</file>
+
+<file path="src/pages/Tree.css">
+.tree-section {
+  min-height: calc(100vh - 94px);
+  background-color: var(--bg-color); /* Світло-бежевий фон */
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tree-title {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.tree-subtitle {
+  font-family: var(--font-sans);
+  color: #666;
+  margin-bottom: 50px;
+}
+
+/* Полотно, де розташовані іконки */
+.tree-canvas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  max-width: 1000px;
+  position: relative;
+}
+
+.tree-node {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Обгортка для іконки, щоб зробити жовте коло при кліку */
+.node-icon-wrapper {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+/* Жовте підсвічування для активної іконки, як на макеті */
+.tree-node.active .node-icon-wrapper,
+.tree-node:hover .node-icon-wrapper {
+  background-color: #ffd966; /* Жовтий колір з презентації */
+  transform: scale(1.1);
+}
+
+/* ----- СТИЛІ ДЛЯ СПЛИВАЮЧОЇ КАРТКИ (TOOLTIP) ----- */
+.person-tooltip {
+  position: absolute;
+  top: -20px;
+  left: 90px; /* Зсуваємо картку правіше від іконки */
+  width: 320px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  animation: slideIn 0.2s ease-out;
+  cursor: default;
+}
+
+.tooltip-name {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  margin: 0 0 15px 0;
+  color: var(--text-dark);
+  text-transform: uppercase;
+}
+
+.tooltip-meta {
+  display: flex;
+  gap: 20px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  margin-bottom: 15px;
+}
+
+.tooltip-details p {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.tooltip-notes {
+  margin-top: 15px !important;
+  color: #666 !important;
+}
+
+.read-more-btn {
+  display: block;
+  margin: 20px auto 0;
+  background: none;
+  border: none;
+  color: #888;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.read-more-btn:hover {
+  color: var(--text-dark);
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+</file>
+
+<file path="src/pages/Tree.jsx">
+import React, { useState, useEffect } from 'react';
+import { getRelatives } from '../utils/storage.js';
+import Xarrow, { Xwrapper } from 'react-xarrows';
+import './Tree.css';
+
+function Tree() {
+  const [relatives, setRelatives] = useState([]);
+  const [activePersonId, setActivePersonId] = useState(null);
+  const [expandedPersonId, setExpandedPersonId] = useState(null); // Для розгортання "Читати більше"
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getRelatives();
+      const sortedData = data.sort((a, b) => parseInt(a.birthYear || 0) - parseInt(b.birthYear || 0));
+      setRelatives(sortedData);
+    };
+    fetchData();
+  }, []);
+
+  const getAge = (birthYear) => {
+    if (!birthYear) return '—';
+    return new Date().getFullYear() - parseInt(birthYear);
+  };
+
+  const handleBackgroundClick = () => {
+    setActivePersonId(null);
+    setExpandedPersonId(null);
+  };
+
+  // МАГІЯ: Функція автоматичного вираховування бабусь та дідусів
+  const getComputedTags = (targetPerson) => {
+    const computedTags = [];
+    if (!targetPerson.tags) return computedTags;
+
+    // Знаходимо безпосередніх батьків цієї людини
+    const parents = targetPerson.tags.filter(t => t.role === 'Матір' || t.role === 'Батько');
+
+    parents.forEach(parentTag => {
+      // Знаходимо об'єкт батька/матері в загальній базі
+      const parentObj = relatives.find(r => r.id === parentTag.relatedPersonId);
+      
+      if (parentObj && parentObj.tags) {
+        // Знаходимо батьків цього батька/матері (тобто бабусь і дідусів для targetPerson)
+        const grandParents = parentObj.tags.filter(t => t.role === 'Матір' || t.role === 'Батько');
+        
+        grandParents.forEach(gpTag => {
+          computedTags.push({
+            role: gpTag.role === 'Матір' ? 'Бабуся' : 'Дідусь',
+            relatedPersonName: gpTag.relatedPersonName,
+            isComputed: true // Позначка, що цей тег вирахувано автоматично
+          });
+        });
+      }
+    });
+
+    return computedTags;
+  };
+
+  return (
+    <section className="tree-section" onClick={handleBackgroundClick}>
+      <h2 className="tree-title">РОДОВІДНЕ ДЕРЕВО</h2>
+      <p className="tree-subtitle">Натисніть на іконку, щоб переглянути деталі</p>
+
+      <div className="tree-canvas">
+        <Xwrapper>
+          {relatives.map((person) => {
+            const isActive = activePersonId === person.id;
+            const isExpanded = expandedPersonId === person.id;
+
+            // Отримуємо автоматичні теги
+            const computedTags = getComputedTags(person);
+            const allTags = [...(person.tags || []), ...computedTags];
+
+            return (
+              <div 
+                key={person.id} 
+                id={person.id}
+                className={`tree-node ${isActive ? 'active' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActivePersonId(isActive ? null : person.id);
+                  if (!isActive) setExpandedPersonId(null); // Скидаємо "читати більше" при зміні людини
+                }}
+              >
+                <div className="node-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="#000" width="45px" height="45px">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                  </svg>
+                </div>
+
+                {isActive && (
+                  <div className="person-tooltip" onClick={(e) => e.stopPropagation()}>
+                    <h4 className="tooltip-name">{person.fullName}</h4>
+                    <div className="tooltip-meta">
+                      <span className="tooltip-age">{getAge(person.birthYear)} років</span>
+                      <span className="tooltip-year">{person.birthYear || 'Рік невідомий'}</span>
+                    </div>
+                    
+                    <div className="tooltip-details">
+                      <p><strong>Освіта:</strong> {person.education || 'Не вказано'}</p>
+                    </div>
+
+                    {/* Кнопка "Читати більше" з макету */}
+                    <button 
+                      className="read-more-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setExpandedPersonId(isExpanded ? null : person.id);
+                      }}
+                    >
+                      {isExpanded ? 'Сховати деталі' : 'Читати більше'}
+                    </button>
+
+                    {/* Зона з хештегами, яка відкривається */}
+                    {isExpanded && (
+                      <div className="tooltip-tags-area">
+                        <p className="tooltip-notes"><strong>Родинні зв'язки:</strong></p>
+                        {allTags.length > 0 ? (
+                          <div className="tags-display-small">
+                            {allTags.map((tag, i) => (
+                              <span key={i} className={`tag-pill-small ${tag.isComputed ? 'computed-tag' : ''}`}>
+                                #{tag.role}: {tag.relatedPersonName} {tag.isComputed && '✨'}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <p style={{fontSize: '0.85rem', color: '#888'}}>Зв'язки не додані</p>
+                        )}
+                        <p className="tooltip-notes" style={{marginTop: '10px'}}><strong>Нотатки:</strong> {person.notes || 'Тут буде інформація...'}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          {/* МАЛЮВАННЯ ЛІНІЙ ПО МАСИВУ ТЕГІВ */}
+          {relatives.map((person) => {
+            if (!person.tags || person.tags.length === 0) return null;
+
+            return person.tags.map((tag, index) => {
+              let startNode = person.id;
+              let endNode = tag.relatedPersonId;
+              let isDashed = false;
+
+              // Логіка напрямку: лінія завжди йде від старшого до молодшого
+              if (tag.role === 'Матір' || tag.role === 'Батько') {
+                startNode = tag.relatedPersonId; // Матір/Батько
+                endNode = person.id;             // Дитина
+              } else if (tag.role === 'Син' || tag.role === 'Дочка') {
+                startNode = person.id;           // Батько/Матір
+                endNode = tag.relatedPersonId;   // Дитина
+              } else if (tag.role === 'Брат' || tag.role === 'Сестра') {
+                isDashed = true;
+              }
+
+              return (
+                <Xarrow 
+                  key={`arrow-${person.id}-${index}`}
+                  start={startNode} 
+                  end={endNode} 
+                  color="#a88b68" 
+                  strokeWidth={2} 
+                  path="smooth" 
+                  dashness={isDashed}
+                  showHead={false} 
+                />
+              );
+            });
+          })}
+        </Xwrapper>
+      </div>
+    </section>
+  );
+}
+
+export default Tree;
+</file>
+
+<file path="src/script.js">
+const button = document.getElementById("addBtn");
+const container = document.getElementById("peopleContainer");
+const modal = document.getElementById("modal");
+const closeBtn = document.getElementById("closeModal");
+
+let people = [];
+
+// Додавання нової людини
+button.addEventListener("click", function() {
+    const surname = document.getElementById("surnameInput").value;
+    const name = document.getElementById("nameInput").value;
+    const patronymic = document.getElementById("patronymicInput").value;
+    const year = document.getElementById("yearInput").value;
+
+    if (name === "" || surname === "") {
+        alert("Будь ласка, введіть хоча б прізвище та ім'я");
+        return;
+    }
+
+    const person = {
+        id: Date.now(),
+        firstName: name,
+        lastName: surname,
+        patronymic: patronymic,
+        birthYear: year
+    };
+
+    people.push(person);
+    renderPeople();
+
+    // Очищення полів
+    document.getElementById("surnameInput").value = "";
+    document.getElementById("nameInput").value = "";
+    document.getElementById("patronymicInput").value = "";
+    document.getElementById("yearInput").value = "";
+});
+
+// Функція відображення карток
+function renderPeople() {
+    container.innerHTML = "";
+
+    people.forEach(function(person) {
+        const card = document.createElement("div");
+        card.classList.add("person-card");
+
+        // Відкриваємо модальне вікно при кліку на картку
+        card.onclick = function() {
+            openModal(person);
+        };
+
+        card.innerHTML = `
+            <h3>${person.lastName} ${person.firstName}</h3>
+            <p>Рік народження: ${person.birthYear}</p>
+            <button class="delete-btn" onclick="event.stopPropagation(); deletePerson(${person.id})">Видалити</button>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+// Видалення людини
+function deletePerson(id) {
+    people = people.filter(p => p.id !== id);
+    renderPeople();
+}
+
+// Відкриття анкети
+function openModal(person) {
+    document.getElementById("modalName").innerText = `${person.lastName} ${person.firstName} ${person.patronymic}`;
+    document.getElementById("modalInfo").innerText = `Детальна інформація: народився у ${person.birthYear} році.`;
+    modal.classList.remove("modal-hidden");
+}
+
+// Закриття анкети
+closeBtn.onclick = function() {
+    modal.classList.add("modal-hidden");
+};
+
+// Закриття при кліку поза вікном
+window.onclick = function(event) {
+    if (event.target === modal) {
+        modal.classList.add("modal-hidden");
+    }
+};
+</file>
+
+<file path="src/style.css">
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#peopleContainer {
+    display: flex;
+    flex-wrap: wrap; /* Дозволяє карткам переходити на новий рядок */
+    justify-content: center; /* Центрує картки */
+    gap: 20px; /* Робить однакові відступи між картками */
+    margin-top: 30px;
+}
+
+.person-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 10px;
+    display: inline-block;
+    width: 200px;
+    border-radius: 10px;
+}
+</file>
+
+<file path="src/utils/firebase.js">
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDovCN9GpUl8WfTbowVGRO_o7prekbDZFU",
+  authDomain: "family-tree-app-ac104.firebaseapp.com",
+  projectId: "family-tree-app-ac104",
+  storageBucket: "family-tree-app-ac104.firebasestorage.app",
+  messagingSenderId: "738759083625",
+  appId: "1:738759083625:web:3a72c9d38afc43a55184f8"
+};
+
+// Ініціалізація Firebase
+const app = initializeApp(firebaseConfig);
+
+// Ініціалізація Firestore (бази даних)
+export const db = getFirestore(app);
+</file>
+
+<file path="src/utils/storage.js">
+import { collection, getDocs, addDoc, deleteDoc, doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "./firebase";
+
+// --- РОБОТА З РОДИЧАМИ ---
+const relativesCollectionRef = collection(db, "relatives");
+
+export const getRelatives = async () => {
+  try {
+    const data = await getDocs(relativesCollectionRef);
+    return data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  } catch (error) {
+    console.error("Помилка отримання даних:", error);
+    return [];
+  }
+};
+
+export const saveRelative = async (newPerson) => {
+  try {
+    const docRef = await addDoc(relativesCollectionRef, newPerson);
+    return { ...newPerson, id: docRef.id };
+  } catch (error) {
+    console.error("Помилка збереження:", error);
+  }
+};
+
+export const deleteRelativeFromDB = async (id) => {
+  try {
+    const personDoc = doc(db, "relatives", id);
+    await deleteDoc(personDoc);
+  } catch (error) {
+    console.error("Помилка видалення:", error);
+  }
+};
+
+// --- РОБОТА З ПРОФІЛЕМ ---
+// Створюємо посилання на один конкретний документ "main_profile" у колекції "users"
+const profileDocRef = doc(db, "users", "main_profile");
+
+export const getProfileData = async () => {
+  try {
+    const docSnap = await getDoc(profileDocRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      return null; // Якщо документа ще немає
+    }
+  } catch (error) {
+    console.error("Помилка отримання профілю:", error);
+    return null;
+  }
+};
+
+export const saveProfileData = async (profileData) => {
+  try {
+    // setDoc перезаписує документ або створює його, якщо його не існує
+    await setDoc(profileDocRef, profileData);
+    return true;
+  } catch (error) {
+    console.error("Помилка збереження профілю:", error);
+    return false;
+  }
+};
+</file>
+
+<file path="vite.config.js">
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+})
+</file>
+
+<file path="index.html">
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Мій Родовід</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+</file>
+
+</files>

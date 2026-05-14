@@ -1,0 +1,86 @@
+.page-wrapper {
+  background-color: var(--bg-color);
+  min-height: calc(100vh - 94px);
+  padding: 30px 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Верхня панель з меню */
+.people-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.hamburger-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.hamburger-icon span {
+  display: block;
+  width: 40px;
+  height: 3px;
+  background-color: #2b3a4a;
+}
+
+.main-title {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 400;
+  color: #3f5261;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.spacer {
+  width: 40px; /* Дорівнює ширині гамбургера для балансу */
+}
+
+/* Розділення на 2 колонки */
+.people-content {
+  display: flex;
+  gap: 60px;
+  flex-grow: 1;
+}
+
+.form-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.cards-area {
+  flex-grow: 1;
+}
+
+.cards-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.footer-brand {
+  text-align: center;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-top: 40px;
+  color: #000;
+}
+
+.people-section {
+  background-color: var(--bg-color);
+  min-height: calc(100vh - 94px);
+  padding: 30px 50px;
+}
+
+.people-container {
+  display: flex;
+  flex-direction: column;
+}

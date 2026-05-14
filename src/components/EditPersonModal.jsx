@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import './EditPersonModal.css';
 
 function EditPersonModal({ person, onClose, onSave }) {
-  // Створюємо локальний стан для полів форми
   const [formData, setFormData] = useState({
     ...person,
+    deathYear: person.deathYear || '',
+    birthPlace: person.birthPlace || '',
     education: person.education || '',
     notes: person.notes || ''
   });
@@ -13,50 +14,63 @@ function EditPersonModal({ person, onClose, onSave }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    onSave(formData);
-  };
-
   return (
-    <div className="edit-modal-overlay" onClick={onClose}>
-      <div className="edit-modal-content" onClick={(e) => e.stopPropagation()}>
-        <span className="close-x" onClick={onClose}>&times;</span>
-        <h2 className="edit-modal-title">Редагувати дані</h2>
+    <div className="edit-panel-container">
+      
+      {/* Кругла аватарка (заглушка) */}
+      <div className="edit-avatar-placeholder">
+        <div className="avatar-circle"></div>
+      </div>
+
+      {/* Список полів */}
+      <div className="edit-fields-list">
+        <div className="edit-row">
+          <label>Прізвище</label>
+          <input name="lastName" value={formData.lastName} onChange={handleChange} className="uppercase-text" />
+        </div>
         
-        <div className="edit-form-group">
-          <label>Прізвище та ім'я</label>
-          <input 
-            name="firstName" 
-            value={`${formData.lastName} ${formData.firstName}`} 
-            disabled 
-            style={{backgroundColor: '#f9f9f9', color: '#888'}}
-          />
+        <div className="edit-row">
+          <label>Ім'я</label>
+          <input name="firstName" value={formData.firstName} onChange={handleChange} className="uppercase-text" />
         </div>
-
-        <div className="edit-form-group">
+        
+        <div className="edit-row">
+          <label>По-батькові</label>
+          <input name="patronymic" value={formData.patronymic} onChange={handleChange} className="uppercase-text" />
+        </div>
+        
+        <div className="edit-row">
+          <label>Рік народження</label>
+          <input name="birthYear" value={formData.birthYear} onChange={handleChange} />
+        </div>
+        
+        <div className="edit-row">
+          <label>Рік смерті</label>
+          <input name="deathYear" value={formData.deathYear} onChange={handleChange} placeholder="-" />
+        </div>
+        
+        <div className="edit-row">
+          <label>Місце народження</label>
+          <input name="birthPlace" value={formData.birthPlace} onChange={handleChange} className="uppercase-text" />
+        </div>
+        
+        <div className="edit-row">
           <label>Освіта</label>
-          <input 
-            name="education" 
-            value={formData.education} 
-            onChange={handleChange} 
-            placeholder="Вкажіть навчальний заклад..."
-          />
+          <input name="education" value={formData.education} onChange={handleChange} className="uppercase-text" />
         </div>
-
-        <div className="edit-form-group">
-          <label>Нотатки / Біографія</label>
-          <textarea 
-            name="notes" 
-            value={formData.notes} 
-            onChange={handleChange} 
-            placeholder="Додайте цікаву інформацію про родича..."
-          />
-        </div>
-
-        <div className="edit-modal-actions">
-          <button className="save-btn" onClick={handleSubmit}>ЗБЕРЕГТИ ЗМІНИ</button>
+        
+        <div className="edit-row">
+          <label>Нотатки</label>
+          <input name="notes" value={formData.notes} onChange={handleChange} className="normal-text" />
         </div>
       </div>
+
+      {/* Кнопки внизу */}
+      <div className="edit-actions-bottom">
+        <button className="red-action-btn" onClick={onClose}>СКАСУВАТИ</button>
+        <button className="red-action-btn" onClick={() => onSave(formData)}>ЗБЕРЕГТИ</button>
+      </div>
+
     </div>
   );
 }

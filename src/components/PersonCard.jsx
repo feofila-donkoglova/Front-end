@@ -1,7 +1,7 @@
 import React from 'react';
 import './PersonCard.css';
 
-function PersonCard({ person }) {
+function PersonCard({ person, onDelete, onEdit }) {
   // Рахуємо вік для відображення "40 років"
   const currentYear = new Date().getFullYear();
   const age = person.birthYear ? currentYear - parseInt(person.birthYear) : '—';
@@ -23,8 +23,12 @@ function PersonCard({ person }) {
       
       {/* Кнопки */}
       <div className="card-actions">
-        <button className="delete-btn">ВИДАЛИТИ</button>
-        <button className="edit-btn">РЕДАГУВАТИ</button>
+        <button className="delete-btn" onClick={() => onDelete(person.id)}>
+          ВИДАЛИТИ
+        </button>
+        <button className="edit-btn" onClick={() => onEdit(person)}>
+          РЕДАГУВАТИ
+        </button>
       </div>
     </div>
   );

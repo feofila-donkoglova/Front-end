@@ -32,22 +32,19 @@ function Tree() {
     const computedTags = [];
     if (!targetPerson.tags) return computedTags;
 
-    // Знаходимо безпосередніх батьків цієї людини
     const parents = targetPerson.tags.filter(t => t.role === 'Матір' || t.role === 'Батько');
 
     parents.forEach(parentTag => {
-      // Знаходимо об'єкт батька/матері в загальній базі
       const parentObj = relatives.find(r => r.id === parentTag.relatedPersonId);
       
       if (parentObj && parentObj.tags) {
-        // Знаходимо батьків цього батька/матері (тобто бабусь і дідусів для targetPerson)
         const grandParents = parentObj.tags.filter(t => t.role === 'Матір' || t.role === 'Батько');
         
         grandParents.forEach(gpTag => {
           computedTags.push({
             role: gpTag.role === 'Матір' ? 'Бабуся' : 'Дідусь',
             relatedPersonName: gpTag.relatedPersonName,
-            isComputed: true // Позначка, що цей тег вирахувано автоматично
+            isComputed: true 
           });
         });
       }
@@ -91,16 +88,22 @@ function Tree() {
                 {isActive && (
                   <div className="person-tooltip" onClick={(e) => e.stopPropagation()}>
                     <h4 className="tooltip-name">{person.fullName}</h4>
+                    
                     <div className="tooltip-meta">
                       <span className="tooltip-age">{getAge(person.birthYear)} років</span>
-                      <span className="tooltip-year">{person.birthYear || 'Рік невідомий'}</span>
+                      <span className="tooltip-year">
+                        {person.birthYear || 'Рік невідомий'} 
+                        {person.deathYear ? ` — ${person.deathYear}` : ''}
+                      </span>
                     </div>
                     
                     <div className="tooltip-details">
+                      {person.birthPlace && (
+                        <p><strong>Місце народження:</strong> {person.birthPlace}</p>
+                      )}
                       <p><strong>Освіта:</strong> {person.education || 'Не вказано'}</p>
                     </div>
-
-                    {/* Кнопка "Читати більше" з макету */}
+                    
                     <button 
                       className="read-more-btn"
                       onClick={(e) => {

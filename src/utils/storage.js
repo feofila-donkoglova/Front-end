@@ -32,11 +32,10 @@ export const deleteRelativeFromDB = async (id) => {
   }
 };
 
-// НОВА ФУНКЦІЯ: Оновлення існуючого родича в базі
-export const updateRelativeInDB = async (id, updatedData) => {
+export const updateRelativeInDB = async (updatedPerson) => {
   try {
-    const personDoc = doc(db, "relatives", id);
-    await updateDoc(personDoc, updatedData);
+    const personDoc = doc(db, "relatives", updatedPerson.id);
+    await updateDoc(personDoc, updatedPerson);
     return true;
   } catch (error) {
     console.error("Помилка оновлення:", error);

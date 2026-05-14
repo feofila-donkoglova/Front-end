@@ -98,3 +98,68 @@
 .red-action-btn:active {
   transform: scale(0.98);
 }
+
+.edit-tags-section {
+  margin-top: 10px;
+  border-top: 1px dashed #eee;
+  padding-top: 20px;
+}
+
+.edit-tags-label {
+  color: #999999;
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.edit-tags-box {
+  background-color: #fcfcfc;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.tag-pill-gray {
+  background-color: #929292;
+  color: #1a1a1a;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: inline-block;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.tag-pill-gray:hover {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.yellow-select {
+  background-color: #f7cd5c;
+  border: none;
+  border-radius: 15px;
+  padding: 8px 15px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+}
+
+.confirm-tag-btn {
+  background-color: #1e2638;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

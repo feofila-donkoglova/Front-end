@@ -3,30 +3,32 @@ import { getRelatives, getProfileData, saveProfileData } from '../utils/storage.
 import "./MyProfile.css";
 
 function Profile() {
-  const [relativesCount, setRelativesCount] = useState(0);
+  const [relativesList, setRelativesList] = useState([]); // ДОДАНО: Зберігаємо масив родичів
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Початкові дані
-const [profileData, setProfileData] = useState({
-    fullName: "Прізвище Ім'я",
-    birthYear: "Рік народження",
-    birthPlace: "Місце народження",
-    education: "Ваша освіта",
-    notes: "Напишіть кілька слів про себе..."
+  const [profileData, setProfileData] = useState({
+    fullName: "",
+    birthYear: "",
+    birthPlace: "",
+    education: "",
+    notes: "",
+    motherId: "",
+    fatherId: "" 
   });
 
-  // Завантажуємо дані при відкритті сторінки
   useEffect(() => {
     const fetchData = async () => {
-      // Завантажуємо статистику родичів
       const relatives = await getRelatives();
-      setRelativesCount(relatives.length);
+      setRelativesList(relatives); 
 
-      // Завантажуємо дані профілю з Firebase
       const savedProfile = await getProfileData();
       if (savedProfile) {
-        setProfileData(savedProfile); // Якщо в базі щось є, оновлюємо стан
+        setProfileData({
+          ...savedProfile,
+          motherId: savedProfile.motherId || "",
+          fatherId: savedProfile.fatherId || ""
+        }); 
       }
       setIsLoading(false);
     };
@@ -38,8 +40,13 @@ const [profileData, setProfileData] = useState({
   };
 
   const handleSave = async () => {
-    setIsEditing(false); // Закриваємо форму
-    await saveProfileData(profileData); // Відправляємо дані у Firebase
+    setIsEditing(false);
+    await saveProfileData(profileData);
+  };
+
+  const getRelativeName = (id) => {
+    const rel = relativesList.find(r => r.id === id);
+    return rel ? `${rel.firstName} ${rel.lastName}` : "Не вказано";
   };
 
   return (
@@ -71,14 +78,35 @@ const [profileData, setProfileData] = useState({
                 <input name="birthPlace" value={profileData.birthPlace} onChange={handleChange} placeholder="Місце народження" />
                 <input name="education" value={profileData.education} onChange={handleChange} placeholder="Освіта" />
                 <textarea name="notes" value={profileData.notes} onChange={handleChange} placeholder="Додайте інформацію про себе..." />
+                
+                <div className="profile-parents-selects">
+                  <label>Моя Матір:</label>
+                  <select name="motherId" value={profileData.motherId} onChange={handleChange}>
+                    <option value="">Не обрано</option>
+                    {relativesList.map(r => <option key={r.id} value={r.id}>{r.firstName} {r.lastName}</option>)}
+                  </select>
+
+                  <label>Мій Батько:</label>
+                  <select name="fatherId" value={profileData.fatherId} onChange={handleChange}>
+                    <option value="">Не обрано</option>
+                    {relativesList.map(r => <option key={r.id} value={r.id}>{r.firstName} {r.lastName}</option>)}
+                  </select>
+                </div>
+
               </div>
             ) : (
               <div className="view-profile">
-                <h3 className="profile-name">{profileData.fullName}</h3>
+                <h3 className="profile-name">{profileData.fullName || 'Ім\'я не вказано'}</h3>
                 <p className="profile-year">{profileData.birthYear}</p>
                 <div className="profile-details-list">
                   <p><span>Місце народження:</span> {profileData.birthPlace || 'Не вказано'}</p>
                   <p><span>Освіта:</span> {profileData.education || 'Не вказано'}</p>
+                  
+                  <div className="view-parents-block">
+                    <p><span>Матір:</span> {getRelativeName(profileData.motherId)}</p>
+                    <p><span>Батько:</span> {getRelativeName(profileData.fatherId)}</p>
+                  </div>
+
                   <p className="profile-notes"><span>Нотатки:</span> {profileData.notes || 'Додати інформацію про себе'}</p>
                 </div>
               </div>
@@ -89,13 +117,14 @@ const [profileData, setProfileData] = useState({
                 <button 
                   className="yellow-btn" 
                   onClick={() => setIsEditing(true)}
-                  style={{ opacity: isEditing ? 0.5 : 1 }}
+                  style={{ opacity: isEditing ? 0.5 : 1, display: isEditing ? 'none' : 'block' }}
                 >
                   РЕДАГУВАТИ
                 </button>
                 <button 
                   className="yellow-btn" 
-                  onClick={handleSave} // Тепер ця кнопка зберігає в БД
+                  onClick={handleSave} 
+                  style={{ display: isEditing ? 'block' : 'none' }}
                 >
                   ЗБЕРЕГТИ
                 </button>
@@ -108,7 +137,7 @@ const [profileData, setProfileData] = useState({
           <h3 className="stats-title">СТАТИСТИКА</h3>
           <div className="stats-row">
             <span>Додано родичів:</span>
-            <span className="stats-number">{relativesCount}</span>
+            <span className="stats-number">{relativesList.length}</span>
           </div>
         </div>
       </div>

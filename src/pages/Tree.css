@@ -178,3 +178,20 @@
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+.tree-generation-row {
+  display: flex;
+  justify-content: center;
+  gap: 80px; 
+  margin-bottom: 120px; 
+  width: 100%;
+}
+
+.tree-canvas {
+  position: relative;
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+}

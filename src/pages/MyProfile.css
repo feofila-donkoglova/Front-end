@@ -1,5 +1,3 @@
-/* src/pages/MyProfile.css */
-
 .profile-container {
   display: flex;
   gap: 40px;
@@ -7,7 +5,7 @@
   align-items: flex-start;
   margin-top: 20px;
   flex-grow: 1;
-  flex-wrap: wrap; /* Щоб на малих екранах блоки падали один під один */
+  flex-wrap: wrap; 
 }
 
 /* --- Ліва картка (Профіль) --- */
@@ -74,7 +72,7 @@
   color: #888 !important;
 }
 .profile-notes span {
-  color: #333; /* Слово "Нотатки" темне, а сам текст світліший */
+  color: #333; 
 }
 
 /* Форма редагування */
@@ -162,4 +160,37 @@
 
 .stats-number {
   font-weight: 600;
+}
+
+/* Стилі для вибору батьків */
+.profile-parents-selects {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px dashed #ccc;
+}
+
+.profile-parents-selects label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  margin-top: 5px;
+}
+
+.profile-parents-selects select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  background-color: #f9f9f9;
+  outline: none;
+}
+
+.view-parents-block {
+  margin: 15px 0;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
 }

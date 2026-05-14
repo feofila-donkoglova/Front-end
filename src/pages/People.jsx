@@ -59,6 +59,7 @@ function People() {
                 person={editingPerson}
                 onClose={() => setEditingPerson(null)}
                 onSave={handleSaveEdit}
+                relatives={relatives}
               />
             ) : (
               <div className="cards-grid">

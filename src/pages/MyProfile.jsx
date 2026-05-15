@@ -3,7 +3,7 @@ import { getRelatives, getProfileData, saveProfileData } from '../utils/storage.
 import "./MyProfile.css";
 
 function Profile() {
-  const [relativesList, setRelativesList] = useState([]); // ДОДАНО: Зберігаємо масив родичів
+  const [relativesList, setRelativesList] = useState([]); 
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   
@@ -98,17 +98,21 @@ function Profile() {
               <div className="view-profile">
                 <h3 className="profile-name">{profileData.fullName || 'Ім\'я не вказано'}</h3>
                 <p className="profile-year">{profileData.birthYear}</p>
-                <div className="profile-details-list">
-                  <p><span>Місце народження:</span> {profileData.birthPlace || 'Не вказано'}</p>
-                  <p><span>Освіта:</span> {profileData.education || 'Не вказано'}</p>
+                
+                {/* Семантичний список замість простих параграфів */}
+                <ul className="profile-details-list" style={{ listStyleType: 'none', padding: 0 }}>
+                  <li><strong>Місце народження:</strong> {profileData.birthPlace || 'Не вказано'}</li>
+                  <li><strong>Освіта:</strong> {profileData.education || 'Не вказано'}</li>
                   
-                  <div className="view-parents-block">
-                    <p><span>Матір:</span> {getRelativeName(profileData.motherId)}</p>
-                    <p><span>Батько:</span> {getRelativeName(profileData.fatherId)}</p>
-                  </div>
+                  <li className="view-parents-block" style={{ marginTop: '10px' }}>
+                    <div><strong>Матір:</strong> {getRelativeName(profileData.motherId)}</div>
+                    <div><strong>Батько:</strong> {getRelativeName(profileData.fatherId)}</div>
+                  </li>
 
-                  <p className="profile-notes"><span>Нотатки:</span> {profileData.notes || 'Додати інформацію про себе'}</p>
-                </div>
+                  <li className="profile-notes" style={{ marginTop: '10px' }}>
+                    <strong>Нотатки:</strong> {profileData.notes || 'Додати інформацію про себе'}
+                  </li>
+                </ul>
               </div>
             )}
             
@@ -133,13 +137,33 @@ function Profile() {
           </div>
         </div>
 
+        {/* СТАТИСТИКА: Семантична таблиця */}
         <div className="stats-card">
-          <h3 className="stats-title">СТАТИСТИКА</h3>
-          <div className="stats-row">
-            <span>Додано родичів:</span>
-            <span className="stats-number">{relativesList.length}</span>
-          </div>
+          <h3 className="stats-title">СТАТИСТИКА ДЕРЕВА</h3>
+          <table className="stats-table" style={{ width: '100%', textAlign: 'left', marginTop: '15px', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ borderBottom: '2px solid #f0f0f0' }}>
+                <th style={{ padding: '10px 0', color: '#666' }}>Показник</th>
+                <th style={{ padding: '10px 0', color: '#666', textAlign: 'right' }}>Значення</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style={{ borderBottom: '1px solid #f9f9f9' }}>
+                <td style={{ padding: '10px 0', fontWeight: '500' }}>Всього родичів у базі</td>
+                <td style={{ padding: '10px 0', textAlign: 'right', fontWeight: 'bold', color: '#339af0' }}>
+                  {relativesList.length} осіб
+                </td>
+              </tr>
+              <tr>
+                <td style={{ padding: '10px 0', fontWeight: '500' }}>Заповнено профіль</td>
+                <td style={{ padding: '10px 0', textAlign: 'right', fontWeight: 'bold' }}>
+                  {profileData.fullName ? 'Так' : 'Ні'}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        
       </div>
       <div className="footer-brand">Family Tree</div>
     </div>

@@ -1,23 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './Home.css'; // Підключаємо стилі компонента
+import './Home.css';
 
 function Home() {
   return (
     <section className="hero-section">
-      <div className="hero-overlay"></div> {/* Затемнення для кращого читання тексту */}
+      <div className="hero-overlay"></div>
       <div className="hero-content">
-        {/* Виправив друкарську помилку з макету "you" на "your" */}
-        <h1 className="hero-title">Create your history</h1>
+        <h1 className="hero-title">CREATE YOUR HISTORY</h1>
         <p className="hero-subtitle">
-          Тут ви можете відтворити історію своєї родини.<br />
+          Тут ви можете відтворити історію своєї родини.<br/>
           Щоб назавжди залишити слід у цьому світі для нащадків.
         </p>
         
-        {/* Кнопка для швидкого переходу до списку родичів */}
-        <Link to="/people" className="cta-button">
-          Перейти до родичів
-        </Link>
+        <div className="hero-steps" style={{ marginTop: '30px', textAlign: 'left', display: 'inline-block', backgroundColor: 'rgba(0,0,0,0.4)', padding: '20px 40px', borderRadius: '12px' }}>
+          <h3 style={{ color: '#f5d76e', marginBottom: '15px', fontSize: '18px' }}>Як розпочати:</h3>
+          <ol style={{ color: '#fff', fontSize: '16px', lineHeight: '1.8', paddingLeft: '20px' }}>
+            <li>Заповніть інформацію на сторінці "Моя сторінка".</li>
+            <li>Додайте найближчих родичів у розділі списку.</li>
+            <li>Перейдіть до "Родовідного дерева" для перегляду зв'язків.</li>
+          </ol>
+        </div>
+
       </div>
     </section>
   );

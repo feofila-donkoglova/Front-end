@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getRelatives, getProfileData } from '../utils/storage.js';
 import Xarrow, { Xwrapper } from 'react-xarrows';
 import './Tree.css';
+import YearFact from './YearFact';
 
 function Tree() {
   const [treeGenerations, setTreeGenerations] = useState([]); 
@@ -216,6 +217,9 @@ function Tree() {
                         <div className="tooltip-details">
                           {p.birthPlace && <p><strong>Місце народження:</strong> {p.birthPlace}</p>}
                           <p><strong>Освіта:</strong> {p.education || 'Не вказано'}</p>
+                          {p.birthYear && (
+                            <YearFact year={extractYear(p.birthYear)} />
+                          )}
                         </div>
                         <button className="read-more-btn" onClick={(e) => { e.stopPropagation(); setExpandedPersonId(isExpanded ? null : p.id); }}>
                           {isExpanded ? 'Сховати деталі' : 'Читати більше'}

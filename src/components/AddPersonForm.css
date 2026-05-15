@@ -1,4 +1,3 @@
-
 .vertical-form {
   display: flex;
   flex-direction: column;
@@ -25,25 +24,7 @@
   color: #4a4a4a;
 }
 
-
-.vertical-form input {
-  padding: 12px 20px;
-  border-radius: 25px;
-  border: none;
-  font-size: 0.95rem;
-  color: #555;
-  font-family: var(--font-sans);
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  outline: none;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.vertical-form input::placeholder { color: #aaa; }
-
-
-/* Білий блок з тегами */
+/* Білий блок з селекторами */
 .tags-container-box {
   background-color: #fff;
   border-radius: 12px;
@@ -54,43 +35,11 @@
   gap: 15px;
 }
 
-.tags-header {
-  display: flex;
-  justify-content: space-between;
-  color: #777;
-  font-weight: 600;
-  font-size: 0.95rem;
-  font-family: var(--font-sans);
-}
-
-.arrow-down { font-size: 0.8rem; }
-
-/* Відображення сірих тегів */
-.tags-display-area {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag-pill-gray {
-  background-color: #95a5a6;
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-.tag-pill-gray:hover {
-  opacity: 0.8;
-  background-color: #ff6b6b; /* Робимо червоним при наведенні, щоб було зрозуміло, що це видалення */
-  color: white;
-}
-/* Жовті селектори */
+/* Контейнер жовтих селекторів */
 .tags-selectors {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .yellow-select {
@@ -98,37 +47,16 @@
   color: #333;
   border: none;
   border-radius: 15px;
-  padding: 8px 15px;
-  font-size: 13px;
+  padding: 12px 20px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   outline: none;
   appearance: none; /* Ховаємо стандартну стрілочку браузера */
-  width: max-content;
+  width: 100%; /* Розтягуємо на всю ширину */
+  box-sizing: border-box;
+  text-align: left;
 }
-
-.confirm-tag-btn {
-  background-color: #1e2638;
-  color: #ffffff;
-  border: none;
-  border-radius: 50%; 
-  width: 30px;
-  height: 30px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: flex-start;
-  margin-top: 5px;
-  transition: background-color 0.2s ease;
-}
-
-.confirm-tag-btn:hover {
-  background-color: #3f5261;
-}
-
 
 /* Темно-синя кнопка ДОДАТИ */
 .main-submit-btn {
@@ -149,97 +77,4 @@
 
 .main-submit-btn:hover {
   opacity: 0.9;
-}
-
-.edit-modal-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.edit-modal-content {
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 15px;
-  width: 100%;
-  max-width: 450px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  position: relative;
-  text-align: left;
-}
-
-.edit-modal-title {
-  margin-bottom: 20px;
-  color: #333;
-  font-size: 1.5rem;
-  border-bottom: 2px solid #f5d76e;
-  padding-bottom: 10px;
-}
-
-.edit-form-group {
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-}
-
-.edit-form-group label {
-  margin-bottom: 5px;
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: #666;
-}
-
-.edit-form-group input, 
-.edit-form-group textarea {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  outline: none;
-}
-
-.edit-form-group input:focus, 
-.edit-form-group textarea:focus {
-  border-color: #f5d76e;
-}
-
-.edit-form-group textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-.edit-modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.save-btn {
-  background-color: #f5d76e;
-  color: #333;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.save-btn:hover {
-  background-color: #e2c55d;
-}
-
-.close-x {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  font-size: 24px;
-  cursor: pointer;
-  color: #999;
 }

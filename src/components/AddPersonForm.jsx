@@ -3,39 +3,16 @@ import './AddPersonForm.css';
 
 function AddPersonForm({ onAdd, relatives = [] }) {
   const [form, setForm] = useState({
-    lastName: '', firstName: '', patronymic: '', birthYear: '',
+    lastName: '', 
+    firstName: '', 
+    patronymic: '', 
+    birthYear: '',
+    motherId: '', // Додано поле для матері
+    fatherId: ''  // Додано поле для батька
   });
-  const [tags, setTags] = useState([]);
-  const [tagInput, setTagInput] = useState({ role: '', relatedPersonId: '' });
 
   function handleFormChange(e) {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  }
-
-  function handleTagInputChange(e) {
-    setTagInput(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  }
-
-  function handleAddTag(e) {
-    e.preventDefault();
-    if (!tagInput.role || !tagInput.relatedPersonId) return;
-
-    const relatedPerson = relatives.find(r => r.id === tagInput.relatedPersonId);
-    const shortName = relatedPerson ? relatedPerson.firstName : '...';
-    
-    const newTag = {
-      role: tagInput.role,
-      relatedPersonId: tagInput.relatedPersonId,
-      relatedPersonName: relatedPerson ? relatedPerson.fullName : 'Невідомо',
-      displayLabel: `${tagInput.role} ${shortName}`
-    };
-
-    setTags([...tags, newTag]);
-    setTagInput({ role: '', relatedPersonId: '' });
-  }
-
-  function handleRemoveTag(indexToRemove) {
-    setTags(tags.filter((_, index) => index !== indexToRemove));
   }
 
   function handleSubmit() {
@@ -46,15 +23,22 @@ function AddPersonForm({ onAdd, relatives = [] }) {
 
     const person = {
       id: crypto.randomUUID(),
-      firstName: form.firstName, lastName: form.lastName,
-      patronymic: form.patronymic, birthYear: form.birthYear,
-      tags: tags,
+      firstName: form.firstName, 
+      lastName: form.lastName,
+      patronymic: form.patronymic, 
+      birthYear: form.birthYear,
+      motherId: form.motherId || null, // Зберігаємо null, якщо батька/матір не вказано
+      fatherId: form.fatherId || null, 
       fullName: `${form.lastName} ${form.firstName} ${form.patronymic}`.trim()
     };
 
     onAdd(person);
-    setForm({ lastName: '', firstName: '', patronymic: '', birthYear: '' });
-    setTags([]);
+    
+    // Очищення форми після додавання
+    setForm({ 
+      lastName: '', firstName: '', patronymic: '', birthYear: '', 
+      motherId: '', fatherId: '' 
+    });
   }
 
   return (
@@ -62,41 +46,24 @@ function AddPersonForm({ onAdd, relatives = [] }) {
       <input className="custom-input" name="lastName" value={form.lastName} onChange={handleFormChange} placeholder="Прізвище" />
       <input className="custom-input" name="firstName" value={form.firstName} onChange={handleFormChange} placeholder="Ім'я" />
       <input className="custom-input" name="patronymic" value={form.patronymic} onChange={handleFormChange} placeholder="По-батькові" />
-      <input className="custom-input" name="birthYear" type="text" value={form.birthYear} onChange={handleFormChange} placeholder="Дата народження (напр. 12.05.1945 або 1945)" />      {/* Білий блок для тегів */}
+      <input className="custom-input" name="birthYear" type="text" value={form.birthYear} onChange={handleFormChange} placeholder="Дата народження (напр. 12.05.1945 або 1945)" />      
+      
+      {/* Спрощений блок для вибору батьків */}
       <div className="tags-container-box">
-
-        {/* Відображення доданих тегів (сірі) */}
-        {tags.length > 0 && (
-          <div className="tags-display-area">
-            {tags.map((tag, index) => (
-              <span key={index} className="tag-pill-gray" onClick={() => handleRemoveTag(index)} title="Натисніть, щоб видалити">
-                {tag.displayLabel}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {/* Жовті селектори */}
         <div className="tags-selectors">
-          <select name="role" value={tagInput.role} onChange={handleTagInputChange} className="yellow-select">
-            <option value="">Ким доводиться: ▼</option>
-            <option value="Матір">Матір</option>
-            <option value="Батько">Батько</option>
-            <option value="Син">Син</option>
-            <option value="Донька">Донька</option>
-            <option value="Брат">Брат</option>
-            <option value="Сестра">Сестра</option>
+          <select name="motherId" value={form.motherId} onChange={handleFormChange} className="yellow-select">
+            <option value="">Оберіть матір ▼</option>
+            {relatives.map(r => (
+              <option key={r.id} value={r.id}>{r.firstName} {r.lastName}</option>
+            ))}
           </select>
 
-          <select name="relatedPersonId" value={tagInput.relatedPersonId} onChange={handleTagInputChange} className="yellow-select">
-            <option value="">Кому ▼</option>
-            {relatives.map(r => <option key={r.id} value={r.id}>{r.firstName} {r.lastName}</option>)}
+          <select name="fatherId" value={form.fatherId} onChange={handleFormChange} className="yellow-select">
+            <option value="">Оберіть батька ▼</option>
+            {relatives.map(r => (
+              <option key={r.id} value={r.id}>{r.firstName} {r.lastName}</option>
+            ))}
           </select>
-
-          {/* Невеличка кнопка для підтвердження тегу, з'являється тільки коли обрані обидва поля */}
-          {tagInput.role && tagInput.relatedPersonId && (
-            <button className="confirm-tag-btn" onClick={handleAddTag}>+</button>
-          )}
         </div>
       </div>
 

@@ -2,49 +2,37 @@ import React, { useState } from 'react';
 import './EditPersonModal.css';
 
 function EditPersonModal({ person, onClose, onSave, relatives = [] }) {
+  // Ініціалізуємо стан, одразу витягуючи motherId та fatherId, якщо вони є
   const [formData, setFormData] = useState({
     ...person,
     deathYear: person.deathYear || '',
     birthPlace: person.birthPlace || '',
     education: person.education || '',
-    notes: person.notes || ''
+    notes: person.notes || '',
+    motherId: person.motherId || '',
+    fatherId: person.fatherId || ''
   });
-  const [tags, setTags] = useState(person.tags || []);
-  const [tagInput, setTagInput] = useState({ role: '', relatedPersonId: '' });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  function handleTagInputChange(e) {
-    setTagInput(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  }
-
-  function handleAddTag(e) {
-    e.preventDefault();
-    if (!tagInput.role || !tagInput.relatedPersonId) return;
-
-    const relatedPerson = relatives.find(r => r.id === tagInput.relatedPersonId);
-    const shortName = relatedPerson ? relatedPerson.firstName : '...';
-    
-    const newTag = {
-      role: tagInput.role,
-      relatedPersonId: tagInput.relatedPersonId,
-      relatedPersonName: relatedPerson ? relatedPerson.fullName : 'Невідомо',
-      displayLabel: `${tagInput.role} ${shortName}`
-    };
-
-    setTags([...tags, newTag]);
-    setTagInput({ role: '', relatedPersonId: '' });
-  }
-
-  function handleRemoveTag(indexToRemove) {
-    setTags(tags.filter((_, index) => index !== indexToRemove));
-  }
-
   const handleSubmit = () => {
-    onSave({ ...formData, tags: tags }); 
+    // Формуємо фінальний об'єкт для збереження
+    const dataToSave = {
+      ...formData,
+      motherId: formData.motherId || null, // Порожні рядки перетворюємо на null
+      fatherId: formData.fatherId || null
+    };
+    
+    // Видаляємо застаріле поле tags, щоб не смітити в базі
+    delete dataToSave.tags; 
+
+    onSave(dataToSave); 
   };
+
+  // Фільтруємо список родичів, щоб людина не могла обрати себе як батька/матір
+  const availableParents = relatives.filter(r => r.id !== person.id);
 
   return (
     <div className="edit-panel-container">
@@ -87,44 +75,24 @@ function EditPersonModal({ person, onClose, onSave, relatives = [] }) {
           <input name="notes" value={formData.notes} onChange={handleChange} className="normal-text" />
         </div>
 
-        {/* ДОДАНО: БЛОК РЕДАГУВАННЯ ТЕГІВ */}
+        {/* НОВИЙ БЛОК: Вибір батьків замість тегів */}
         <div className="edit-tags-section">
-          <label className="edit-tags-label">Родинні зв'язки</label>
+          <label className="edit-tags-label">Батьки (для ієрархії дерева)</label>
           
-          <div className="edit-tags-box">
-            {tags.length > 0 && (
-              <div className="tags-display-area" style={{marginBottom: '15px'}}>
-                {tags.map((tag, index) => (
-                  <span key={index} className="tag-pill-gray" onClick={() => handleRemoveTag(index)} title="Видалити">
-                    {tag.displayLabel}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            <div className="tags-selectors" style={{flexDirection: 'row', gap: '10px', alignItems: 'center'}}>
-              <select name="role" value={tagInput.role} onChange={handleTagInputChange} className="yellow-select">
-                <option value="">Ким доводиться: ▼</option>
-                <option value="Матір">Матір</option>
-                <option value="Батько">Батько</option>
-                <option value="Син">Син</option>
-                <option value="Донька">Донька</option>
-                <option value="Брат">Брат</option>
-                <option value="Сестра">Сестра</option>
-              </select>
-
-              <select name="relatedPersonId" value={tagInput.relatedPersonId} onChange={handleTagInputChange} className="yellow-select">
-                <option value="">Кому ▼</option>
-                {/* Виключаємо саму людину зі списку, щоб вона не додала тег сама на себе */}
-                {relatives.filter(r => r.id !== person.id).map(r => 
-                  <option key={r.id} value={r.id}>{r.firstName} {r.lastName}</option>
-                )}
-              </select>
-
-              {tagInput.role && tagInput.relatedPersonId && (
-                <button className="confirm-tag-btn" onClick={handleAddTag}>+</button>
+          <div className="edit-tags-box parents-box">
+            <select name="motherId" value={formData.motherId} onChange={handleChange} className="yellow-select modal-parent-select">
+              <option value="">Оберіть матір ▼</option>
+              {availableParents.map(r => 
+                <option key={r.id} value={r.id}>{r.firstName} {r.lastName}</option>
               )}
-            </div>
+            </select>
+
+            <select name="fatherId" value={formData.fatherId} onChange={handleChange} className="yellow-select modal-parent-select">
+              <option value="">Оберіть батька ▼</option>
+              {availableParents.map(r => 
+                <option key={r.id} value={r.id}>{r.firstName} {r.lastName}</option>
+              )}
+            </select>
           </div>
         </div>
 
